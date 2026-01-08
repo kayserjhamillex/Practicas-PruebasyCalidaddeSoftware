@@ -1,0 +1,47 @@
+# Dependencias
+node_modules/
+jspm_packages/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Variables de entorno (Contienen secretos y llaves API)
+.env
+.env.test
+.env.production
+.env.local
+
+# Caché de herramientas
+.npm
+.eslintcache
+.node_repl_history
+.cache/
+
+# Salida de compilación (Si usas TypeScript o Babel)
+dist/
+lib/
+out/
+build/
+
+# Archivos del sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Cobertura de pruebas (Testing)
+coverage/
+.nyc_output/
+
+# Documentación generada
+docs/

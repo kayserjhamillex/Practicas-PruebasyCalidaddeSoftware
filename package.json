@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kayserjhamillex/Practicas-PruebasyCalidaddeSoftware.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kayserjhamillex/Practicas-PruebasyCalidaddeSoftware/issues"
+  },
+  "homepage": "https://github.com/kayserjhamillex/Practicas-PruebasyCalidaddeSoftware#readme",
+  "devDependencies": {
+    "cypress": "^15.8.2"
+  }
+}
