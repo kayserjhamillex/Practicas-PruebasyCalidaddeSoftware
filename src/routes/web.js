@@ -1,34 +1,44 @@
 const express = require('express');
 const { validations } = require('../middleware/validations');
+const HomeController = require('../controllers/HomeController');
+const PostController = require('../controllers/PostController');
 
 const router = express.Router();
 
-// Inicio
-router.get('/', (req, res) => {
-  res.send('Hola desde la página de inicio');
-});
+// ========================================
+// RUTA PRINCIPAL (Dashboard)
+// ========================================
+// Equivalente Laravel: Route::get('/', [HomeController::class, '__invoke']);
+router.get('/', HomeController.index);
 
-// Contacto: GET y POST (similar a Route::match)
+// ========================================
+// CONTACTO (sin controlador, lógica simple)
+// ========================================
 router
   .route('/contacto')
   .get((req, res) => res.send('Hola desde la página de contacto'))
   .post((req, res) => res.send('Formulario de contacto procesado'));
 
+// ========================================
+// CURSOS (rutas con validaciones)
+// ========================================
 // IMPORTANTE: ruta estática ANTES que la de parámetros (top-down)
 router.get('/cursos/informacion', (req, res) => {
   res.send('Aquí podrás encontrar toda la información de los cursos');
 });
 
-// Cursos con parámetros (con categoría opcional)
-router.get('/cursos/:curso{/:categoria}', (req, res) => {
-  const { curso, categoria } = req.params;
-  if (categoria) {
-    return res.send(`Bienvenido al curso: ${curso} de la categoría: ${categoria}`);
-  }
-  return res.send(`Bienvenido al curso: ${curso}`);
+// Cursos con parámetros (categoría "opcional" = 2 rutas explícitas)
+router.get('/cursos/:curso', (req, res) => {
+  const { curso } = req.params;
+  res.send(`Bienvenido al curso: ${curso}`);
 });
 
-// Ejemplos de “where” tipo Laravel
+router.get('/cursos/:curso/:categoria', (req, res) => {
+  const { curso, categoria } = req.params;
+  res.send(`Bienvenido al curso: ${curso} de la categoría: ${categoria}`);
+});
+
+// Ejemplos de "where" tipo Laravel
 router.get('/cursos-alpha/:curso', validations.alpha('curso'), (req, res) => {
   res.send(`Bienvenido al curso: ${req.params.curso}`);
 });
@@ -43,17 +53,38 @@ router.get('/cursos-id/:id', validations.numeric('id'), (req, res) => {
   res.send(`Bienvenido al curso con ID: ${req.params.id}`);
 });
 
-// CRUD “web” como en el PDF (respuestas simples)
-router.get('/posts', (req, res) => res.send('Hola desde la página de posts'));
-router.get('/posts/create', (req, res) => res.send('Hola desde la página para crear posts'));
-router.post('/posts', (req, res) => res.send('Aqui se procesará el formulario para crear un post'));
-router.get('/posts/:post', (req, res) => res.send(`Aqui se mostrará el post: ${req.params.post}`));
-router.get('/posts/:post/edit', (req, res) =>
-  res.send(`Aqui se mostrará el formulario para editar un post: ${req.params.post}`)
-);
-router.put('/posts/:post', (req, res) =>
-  res.send(`Aqui se procesará el formulario para editar el post: ${req.params.post}`)
-);
-router.delete('/posts/:post', (req, res) => res.send(`Aqui se elminará el post: ${req.params.post}`));
+// ========================================
+// POSTS (CRUD con Controlador)
+// ========================================
+// Equivalente Laravel:
+// Route::resource('articulos', PostController::class)
+//   ->parameters(['articulos' => 'post'])
+//   ->names('posts');
+
+// Opción 1: Rutas individuales (más explícito)
+router.get('/articulos', PostController.index);              // posts.index
+router.get('/articulos/crear', PostController.create);       // posts.create
+router.post('/articulos', PostController.store);             // posts.store
+router.get('/articulos/:post', PostController.show);         // posts.show
+router.get('/articulos/:post/editar', PostController.edit);  // posts.edit
+router.put('/articulos/:post', PostController.update);       // posts.update
+router.delete('/articulos/:post', PostController.destroy);   // posts.destroy
+
+// Opción 2: Grupo de rutas (equivalente a Route::controller()->group())
+// Descomenta si prefieres esta forma:
+/*
+router.route('/articulos')
+  .get(PostController.index)
+  .post(PostController.store);
+
+router.get('/articulos/crear', PostController.create);
+
+router.route('/articulos/:post')
+  .get(PostController.show)
+  .put(PostController.update)
+  .delete(PostController.destroy);
+
+router.get('/articulos/:post/editar', PostController.edit);
+*/
 
 module.exports = router;
