@@ -2,6 +2,8 @@ const express = require('express');
 const { validations } = require('../middleware/validations');
 const HomeController = require('../controllers/HomeController');
 const PostController = require('../controllers/PostController');
+const { requireAuth } = require('../middleware/authWeb');
+const RepositoryController = require('../controllers/RepositoryController');
 
 const router = express.Router();
 
@@ -86,5 +88,19 @@ router.route('/articulos/:post')
 
 router.get('/articulos/:post/editar', PostController.edit);
 */
+
+// ========================================
+// Ruta para el Login
+// ========================================
+router.get('/login', (req, res) => {
+  res.status(200).send('Página de login');
+});
+
+// ========================================
+// REPOSITORIOS (con autenticación y Controlador)
+// ========================================
+router.get('/repositories', requireAuth, RepositoryController.index);
+router.post('/repositories', requireAuth, RepositoryController.store);
+router.put('/repositories/:id', requireAuth, RepositoryController.update);
 
 module.exports = router;
