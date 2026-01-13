@@ -1,22 +1,21 @@
 const request = require('supertest');
 const app = require('../../src/app');
 
-describe('API - Hello World (TDD)', () => {
+describe('GET /api/hello-world', () => {
   test('hello_world_route_should_return_status_success', async () => {
-    // Teniendo (Given)
-    // (No necesitamos estado inicial)
-
-    // Haciendo (When)
+    // Given: tenemos la aplicación configurada
+    
+    // When: hacemos una petición GET a /api/hello-world
     const response = await request(app).get('/api/hello-world');
 
-    // Esperando (Then)
+    // Then: debe retornar status 200 y el mensaje exacto
     expect(response.status).toBe(200);
+    expect(response.body).toEqual({ msg: 'Hello, World!' });
   });
 
-  test('hello_world_route_should_return_exact_json_message', async () => {
+  test('should return JSON content-type', async () => {
     const response = await request(app).get('/api/hello-world');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({ msg: 'Hello, World!' }); // exactitud como indica el PDF
+    
+    expect(response.headers['content-type']).toMatch(/json/);
   });
 });
