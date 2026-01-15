@@ -3,6 +3,7 @@
  * Controlador para gestionar Posts (CRUD completo)
  * Equivalente a Laravel: php artisan make:controller PostController --resource
  */
+const postStore = require('../stores/postStore');
 
 class PostController {
   // GET /articulos - Listar todos los posts
@@ -43,6 +44,19 @@ class PostController {
     const { post } = req.params;
     res.send(`Aqui se eliminará el post: ${post}`);
   }
+
+  // POST /posts - Crear un nuevo post (implementación real)
+  store = (req, res) => {
+    const post = postStore.create({
+      body: req.body.body,
+      userId: req.user.id
+    })
+    res.status(201).json({
+      message: 'Estado creado correctamente',
+      post
+    })
+  }
 }
+
 
 module.exports = new PostController();

@@ -2,6 +2,7 @@ const express = require('express');
 
 const webRoutes = require('./routes/web');
 const apiRoutes = require('./routes/api');
+const postRoutesStore = require('./routes/posts');
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use('/', webRoutes);
 
 // Rutas API (equivalente a routes/api.php)
 app.use('/api', apiRoutes);
+
+// Ruta para la practica 8
+app.use('/p8', postRoutesStore);
 
 // 404 (respuesta simple; si quieres puedes diferenciar web vs api)
 app.use((req, res) => {

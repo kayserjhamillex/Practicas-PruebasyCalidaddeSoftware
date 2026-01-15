@@ -1,4 +1,4 @@
-const repositoryStore = require('../../../src/stores/repositoryStore');
+const repositoryStore = require('../../../src/stores/repositoryStore')
 
 describe('Relaciones (Unit) - User <> Repository', () => {
   beforeEach(() => {
